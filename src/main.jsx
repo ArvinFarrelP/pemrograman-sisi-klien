@@ -17,6 +17,7 @@ import Login from "@/Pages/Auth/Login/Login";
 import Dashboard from "@/Pages/Admin/Dashboard/Dashboard";
 import Mahasiswa from "@/Pages/Admin/Mahasiswa/Mahasiswa";
 import MahasiswaDetail from "@/Pages/Admin/MahasiswaDetail/MahasiswaDetail";
+import RencanaStudi from "@/Pages/Admin/RencanaStudi/RencanaStudi"; // Add this import
 import PageNotFound from "@/Pages/Error/PageNotFound";
 
 import { Toaster } from "react-hot-toast";
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
             element: <MahasiswaDetail />,
           },
         ],
+      },
+      {
+        path: "rencana-studi", // Add this new route
+        element: <RencanaStudi />,
       },
     ],
   },

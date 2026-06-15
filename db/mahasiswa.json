@@ -1,4 +1,16 @@
 [
-  { "id": 1, "nama": "Budi Santoso", "nim": "20211001", "status": true },
-  { "id": 2, "nama": "Siti Aminah", "nim": "20211002", "status": true }
+  {
+    "id": "1",
+    "nama": "Budi Santoso",
+    "nim": "20211001",
+    "status": true,
+    "max_sks": 20
+  },
+  {
+    "id": "2",
+    "nama": "Siti Aminah",
+    "nim": "20211002",
+    "status": true,
+    "max_sks": 20
+  }
 ]

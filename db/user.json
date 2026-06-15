@@ -11,7 +11,12 @@
       "mahasiswa.read",
       "mahasiswa.create",
       "mahasiswa.update",
-      "mahasiswa.delete"
+      "mahasiswa.delete",
+      "rencana-studi.page",
+      "rencana-studi.read",
+      "rencana-studi.create",
+      "rencana-studi.update",
+      "rencana-studi.delete"
     ]
   },
   {

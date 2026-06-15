@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { useAuthStateContext } from "@/Utils/Contexts/AuthContext"; // Add this import
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
 const Sidebar = () => {
-  const { user } = useAuthStateContext(); // Get user from context
+  const { user } = useAuthStateContext();
 
   const hasPermission = (permission) => {
-    return user?.permission?.includes(permission); // Check if user has specific permission
+    return user?.permission?.includes(permission);
   };
 
   return (
@@ -41,6 +41,21 @@ const Sidebar = () => {
           >
             <span>🎓</span>
             <span className="menu-text hidden lg:inline">Mahasiswa</span>
+          </NavLink>
+        )}
+
+        {/* Only show Rencana Studi if user has rencana-studi.page permission */}
+        {hasPermission("rencana-studi.page") && (
+          <NavLink
+            to="/admin/rencana-studi"
+            className={({ isActive }) =>
+              `flex items-center space-x-2 px-4 py-2 rounded ${
+                isActive ? "bg-blue-700" : "hover:bg-blue-700"
+              }`
+            }
+          >
+            <span>📚</span>
+            <span className="menu-text hidden lg:inline">Rencana Studi</span>
           </NavLink>
         )}
       </nav>
