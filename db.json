@@ -1,4 +1,67 @@
 {
+  "chart": {
+    "students": [
+      {
+        "id": 1,
+        "faculty": "Teknik",
+        "count": 320
+      },
+      {
+        "id": 2,
+        "faculty": "Ekonomi",
+        "count": 210
+      },
+      {
+        "id": 3,
+        "faculty": "Kedokteran",
+        "count": 150
+      },
+      {
+        "id": 4,
+        "faculty": "Hukum",
+        "count": 180
+      },
+      {
+        "id": 5,
+        "faculty": "Ilmu Komputer",
+        "count": 260
+      }
+    ],
+    "genderRatio": [
+      {
+        "id": 1,
+        "gender": "Laki-laki",
+        "count": 600
+      },
+      {
+        "id": 2,
+        "gender": "Perempuan",
+        "count": 700
+      }
+    ],
+    "registrations": [
+      {
+        "id": 1,
+        "year": 2020,
+        "total": 500
+      },
+      {
+        "id": 2,
+        "year": 2021,
+        "total": 580
+      },
+      {
+        "id": 3,
+        "year": 2022,
+        "total": 640
+      },
+      {
+        "id": 4,
+        "year": 2023,
+        "total": 710
+      }
+    ]
+  },
   "dosen": [
     {
       "id": "1",
@@ -25,36 +88,6 @@
       "nama": "Siti Aminah",
       "nim": "20211002",
       "status": true
-    },
-    {
-      "nim": "20211003",
-      "nama": "Abisha Fortino Hendrawan",
-      "status": true,
-      "id": 3
-    },
-    {
-      "nim": "20211004",
-      "nama": "Goklas yedijia Sitorus",
-      "status": true,
-      "id": 4
-    },
-    {
-      "nim": "20211005",
-      "nama": "Arvin Farrel Pramuditya",
-      "status": true,
-      "id": 5
-    },
-    {
-      "nim": "20211006",
-      "nama": "Kannaya Aldora",
-      "status": true,
-      "id": 6
-    },
-    {
-      "nim": "20211007",
-      "nama": "Metha Sari",
-      "status": true,
-      "id": 7
     }
   ],
   "mataKuliah": [
