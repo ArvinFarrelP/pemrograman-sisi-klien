@@ -5,6 +5,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "./App.css";
 
@@ -19,7 +20,9 @@ import MahasiswaDetail from "@/Pages/Admin/MahasiswaDetail/MahasiswaDetail";
 import PageNotFound from "@/Pages/Error/PageNotFound";
 
 import { Toaster } from "react-hot-toast";
-import { AuthProvider } from "./Utils/Contexts/AuthContext"; // Add this import
+import { AuthProvider } from "./Utils/Contexts/AuthContext";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -71,9 +74,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider> {/* Wrap everything with AuthProvider */}
-      <RouterProvider router={router} />
-      <Toaster position="top-right" />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster position="top-right" />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );

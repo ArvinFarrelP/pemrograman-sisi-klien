@@ -1,43 +1,33 @@
-import { useEffect, useState } from "react";
-import { useAuthStateContext } from "@/Utils/Contexts/AuthContext"; // Add this import
+import { useState } from "react";
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
 import MahasiswaModal from "./MahasiswaModal";
 import MahasiswaTable from "./MahasiswaTable";
 
 import {
-  getAllMahasiswa,
-  storeMahasiswa,
-  updateMahasiswa,
-  deleteMahasiswa,
-} from "../../../Utils/Apis/MahasiswaApi";
+  useMahasiswa,
+  useStoreMahasiswa,
+  useUpdateMahasiswa,
+  useDeleteMahasiswa,
+} from "@/Utils/Hooks/useMahasiswa";
 
-import { confirmUpdate, confirmDelete } from "../../../Utils/Helpers/SwalHelpers";
-
-import { toastSuccess, toastError } from "../../../Utils/Helpers/ToastHelpers";
+import { confirmUpdate, confirmDelete } from "@/Utils/Helpers/SwalHelpers";
+import { toastError } from "@/Utils/Helpers/ToastHelpers";
 
 const Mahasiswa = () => {
-  const { user } = useAuthStateContext(); // Add this to get user from context
-  const [mahasiswa, setMahasiswa] = useState([]);
+  const { user } = useAuthStateContext();
+
   const [selectedMahasiswa, setSelectedMahasiswa] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
-  // Add permission checker function
+  const { data: mahasiswa = [], isLoading } = useMahasiswa();
+  const { mutate: store } = useStoreMahasiswa();
+  const { mutate: update } = useUpdateMahasiswa();
+  const { mutate: remove } = useDeleteMahasiswa();
+
   const hasPermission = (permission) => {
     return user?.permission?.includes(permission);
   };
-
-  const fetchMahasiswa = async () => {
-    try {
-      const res = await getAllMahasiswa();
-      setMahasiswa(res.data);
-    } catch {
-      toastError("Gagal mengambil data mahasiswa");
-    }
-  };
-
-  useEffect(() => {
-    fetchMahasiswa();
-  }, []);
 
   const openAddModal = () => {
     setSelectedMahasiswa(null);
@@ -49,45 +39,54 @@ const Mahasiswa = () => {
     setModalOpen(true);
   };
 
-  const handleSubmit = async (form) => {
-    try {
-      if (selectedMahasiswa) {
-        confirmUpdate(async () => {
-          await updateMahasiswa(selectedMahasiswa.id, form);
-          toastSuccess("Data mahasiswa berhasil diupdate");
-          await fetchMahasiswa();
-          setModalOpen(false);
-          setSelectedMahasiswa(null);
-        });
-      } else {
-        await storeMahasiswa(form);
-        toastSuccess("Data mahasiswa berhasil ditambahkan");
-        await fetchMahasiswa();
-        setModalOpen(false);
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedMahasiswa(null);
+  };
+
+  const handleSubmit = (form) => {
+    if (selectedMahasiswa) {
+      confirmUpdate(() => {
+        update(
+          { id: selectedMahasiswa.id, data: form },
+          {
+            onSuccess: () => {
+              closeModal();
+            },
+          }
+        );
+      });
+    } else {
+      const exists = mahasiswa.find((mhs) => mhs.nim === form.nim);
+
+      if (exists) {
+        toastError("NIM sudah terdaftar!");
+        return;
       }
-    } catch {
-      toastError("Gagal menyimpan data mahasiswa");
+
+      store(form, {
+        onSuccess: () => {
+          closeModal();
+        },
+      });
     }
   };
 
-  const handleDelete = async (id) => {
-    confirmDelete(async () => {
-      try {
-        await deleteMahasiswa(id);
-        toastSuccess("Data mahasiswa berhasil dihapus");
-        await fetchMahasiswa();
-      } catch {
-        toastError("Gagal menghapus data mahasiswa");
-      }
+  const handleDelete = (id) => {
+    confirmDelete(() => {
+      remove(id);
     });
   };
+
+  if (isLoading) {
+    return <p className="text-center">Memuat data mahasiswa...</p>;
+  }
 
   return (
     <div className="bg-white p-4 rounded shadow">
       <div className="flex justify-between mb-4">
         <h2 className="text-lg font-semibold">Data Mahasiswa</h2>
 
-        {/* Only show Add button if user has mahasiswa.create permission */}
         {hasPermission("mahasiswa.create") && (
           <button
             onClick={openAddModal}
@@ -98,7 +97,6 @@ const Mahasiswa = () => {
         )}
       </div>
 
-      {/* Only show table if user has mahasiswa.read permission */}
       {hasPermission("mahasiswa.read") ? (
         <MahasiswaTable
           mahasiswa={mahasiswa}
@@ -106,15 +104,14 @@ const Mahasiswa = () => {
           onDelete={handleDelete}
         />
       ) : (
-        <p className="text-red-500">Anda tidak memiliki akses membaca data mahasiswa.</p>
+        <p className="text-red-500">
+          Anda tidak memiliki akses membaca data mahasiswa.
+        </p>
       )}
 
       <MahasiswaModal
         isModalOpen={isModalOpen}
-        onClose={() => {
-          setModalOpen(false);
-          setSelectedMahasiswa(null);
-        }}
+        onClose={closeModal}
         onSubmit={handleSubmit}
         selectedMahasiswa={selectedMahasiswa}
       />

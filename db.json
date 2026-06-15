@@ -1,4 +1,18 @@
 {
+  "dosen": [
+    {
+      "id": "1",
+      "nidn": "0612345678",
+      "nama": "Dr. Ahmad"
+    }
+  ],
+  "kelas": [
+    {
+      "id": "1",
+      "nama": "A11.4316",
+      "semester": 4
+    }
+  ],
   "mahasiswa": [
     {
       "id": "1",
@@ -16,7 +30,15 @@
       "nim": "A11.2023.15062",
       "nama": "Arvin Farrel Pramuditya",
       "status": true,
-      "id": "a-_pLEZmDLA"
+      "id": "RJUr9nW1XBs"
+    }
+  ],
+  "mataKuliah": [
+    {
+      "id": "1",
+      "kode": "IF101",
+      "nama": "Pemrograman Sisi Klien",
+      "sks": 3
     }
   ],
   "user": [
