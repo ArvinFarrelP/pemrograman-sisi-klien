@@ -1,11 +1,21 @@
-import { useAuthStateContext } from "@/Utils/Contexts/AuthContext"; // Add this import
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
-const MahasiswaTable = ({ mahasiswa, openEditModal, onDelete }) => {
-  const { user } = useAuthStateContext(); // Add this to get user from context
+const MahasiswaTable = ({ mahasiswa, openEditModal, onDelete, isLoading }) => {
+  const { user } = useAuthStateContext();
 
   const hasPermission = (permission) => {
     return user?.permission?.includes(permission);
   };
+
+  // Show loading state
+  if (isLoading) {
+    return <p className="text-center py-4">Memuat data...</p>;
+  }
+
+  // Show empty state
+  if (mahasiswa.length === 0) {
+    return <p className="text-center py-4">Data tidak ditemukan.</p>;
+  }
 
   return (
     <table className="w-full text-sm">

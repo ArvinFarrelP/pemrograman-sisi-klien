@@ -10,11 +10,15 @@ import {
   toastError,
 } from "@/Utils/Helpers/ToastHelpers";
 
-export const useMahasiswa = () =>
+// Updated to accept query parameters and return pagination data
+export const useMahasiswa = (query = {}) =>
   useQuery({
-    queryKey: ["mahasiswa"],
-    queryFn: getAllMahasiswa,
-    select: (res) => res?.data ?? [],
+    queryKey: ["mahasiswa", query],
+    queryFn: () => getAllMahasiswa(query),
+    select: (res) => ({
+      data: res?.data ?? [],
+      total: Number(res.headers["x-total-count"] ?? 0),
+    }),
   });
 
 export const useStoreMahasiswa = () => {
