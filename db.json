@@ -84,13 +84,9 @@
   ],
   "kelas": [
     {
-      "mata_kuliah_id": "1",
-      "dosen_id": "1",
-      "mahasiswa_ids": [
-        "1",
-        "2"
-      ],
-      "id": "z4GHeRV"
+      "id": "1",
+      "nama": "A11.4316",
+      "semester": 4
     }
   ],
   "mahasiswa": [
