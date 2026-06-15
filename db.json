@@ -16,7 +16,7 @@
       "nim": "A11.2023.15062",
       "nama": "Arvin Farrel Pramuditya",
       "status": true,
-      "id": "-pH4IsL1MBs"
+      "id": "a-_pLEZmDLA"
     }
   ],
   "user": [
@@ -24,7 +24,28 @@
       "id": "1",
       "name": "Admin 1",
       "email": "admin@mail.com",
-      "password": "admin123"
+      "password": "admin123",
+      "role": "admin",
+      "permission": [
+        "dashboard.page",
+        "mahasiswa.page",
+        "mahasiswa.read",
+        "mahasiswa.create",
+        "mahasiswa.update",
+        "mahasiswa.delete"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Mahasiswa 1",
+      "email": "mahasiswa@mail.com",
+      "password": "mahasiswa123",
+      "role": "mahasiswa",
+      "permission": [
+        "dashboard.page",
+        "mahasiswa.page",
+        "mahasiswa.read"
+      ]
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

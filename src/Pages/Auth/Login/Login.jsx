@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 
 import Input from "@/Pages/Auth/Components/Input";
 import Label from "@/Pages/Auth/Components/Label";
@@ -10,6 +10,7 @@ import Heading from "@/Pages/Auth/Components/Heading";
 import Form from "@/Pages/Auth/Components/Form";
 
 import { login } from "@/Utils/Apis/AuthApi";
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext";
 
 import {
   toastSuccess,
@@ -18,11 +19,14 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useAuthStateContext();
 
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  if (user) return <Navigate to="/admin/dashboard" replace />;
 
   const handleChange = (e) => {
     setForm({
@@ -37,16 +41,15 @@ const Login = () => {
     const { email, password } = form;
 
     try {
-      const user = await login(email, password);
+      const loggedInUser = await login(email, password);
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(user)
-      );
+      setUser(loggedInUser);
 
       toastSuccess("Login berhasil!");
 
-      navigate("/admin/dashboard");
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 10);
     } catch (err) {
       toastError(err.message || "Email atau password salah!");
     }

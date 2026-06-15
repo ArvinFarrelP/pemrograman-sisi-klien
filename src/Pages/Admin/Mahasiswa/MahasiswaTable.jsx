@@ -1,4 +1,12 @@
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext"; // Add this import
+
 const MahasiswaTable = ({ mahasiswa, openEditModal, onDelete }) => {
+  const { user } = useAuthStateContext(); // Add this to get user from context
+
+  const hasPermission = (permission) => {
+    return user?.permission?.includes(permission);
+  };
+
   return (
     <table className="w-full text-sm">
       <thead className="bg-blue-600 text-white">
@@ -17,19 +25,25 @@ const MahasiswaTable = ({ mahasiswa, openEditModal, onDelete }) => {
             <td className="p-2">{mhs.nama}</td>
             <td className="p-2">{mhs.status ? "Aktif" : "Nonaktif"}</td>
             <td className="p-2 space-x-2">
-              <button
-                onClick={() => openEditModal(mhs)}
-                className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
-              >
-                Edit
-              </button>
+              {/* Only show Edit button if user has mahasiswa.update permission */}
+              {hasPermission("mahasiswa.update") && (
+                <button
+                  onClick={() => openEditModal(mhs)}
+                  className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600"
+                >
+                  Edit
+                </button>
+              )}
 
-              <button
-                onClick={() => onDelete(mhs.id)}
-                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-              >
-                Hapus
-              </button>
+              {/* Only show Delete button if user has mahasiswa.delete permission */}
+              {hasPermission("mahasiswa.delete") && (
+                <button
+                  onClick={() => onDelete(mhs.id)}
+                  className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                >
+                  Hapus
+                </button>
+              )}
             </td>
           </tr>
         ))}

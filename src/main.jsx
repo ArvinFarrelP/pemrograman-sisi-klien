@@ -19,6 +19,7 @@ import MahasiswaDetail from "@/Pages/Admin/MahasiswaDetail/MahasiswaDetail";
 import PageNotFound from "@/Pages/Error/PageNotFound";
 
 import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./Utils/Contexts/AuthContext"; // Add this import
 
 const router = createBrowserRouter([
   {
@@ -55,7 +56,7 @@ const router = createBrowserRouter([
             element: <Mahasiswa />,
           },
           {
-            path: ":nim",
+            path: ":id",
             element: <MahasiswaDetail />,
           },
         ],
@@ -69,8 +70,10 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-<React.StrictMode>
-  <RouterProvider router={router} />
-  <Toaster position="top-right" />
-</React.StrictMode>
+  <React.StrictMode>
+    <AuthProvider> {/* Wrap everything with AuthProvider */}
+      <RouterProvider router={router} />
+      <Toaster position="top-right" />
+    </AuthProvider>
+  </React.StrictMode>
 );

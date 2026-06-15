@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuthStateContext } from "@/Utils/Contexts/AuthContext"; // Add this import
 
 import MahasiswaModal from "./MahasiswaModal";
 import MahasiswaTable from "./MahasiswaTable";
@@ -15,9 +16,15 @@ import { confirmUpdate, confirmDelete } from "../../../Utils/Helpers/SwalHelpers
 import { toastSuccess, toastError } from "../../../Utils/Helpers/ToastHelpers";
 
 const Mahasiswa = () => {
+  const { user } = useAuthStateContext(); // Add this to get user from context
   const [mahasiswa, setMahasiswa] = useState([]);
   const [selectedMahasiswa, setSelectedMahasiswa] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  // Add permission checker function
+  const hasPermission = (permission) => {
+    return user?.permission?.includes(permission);
+  };
 
   const fetchMahasiswa = async () => {
     try {
@@ -80,19 +87,27 @@ const Mahasiswa = () => {
       <div className="flex justify-between mb-4">
         <h2 className="text-lg font-semibold">Data Mahasiswa</h2>
 
-        <button
-          onClick={openAddModal}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          + Tambah
-        </button>
+        {/* Only show Add button if user has mahasiswa.create permission */}
+        {hasPermission("mahasiswa.create") && (
+          <button
+            onClick={openAddModal}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            + Tambah
+          </button>
+        )}
       </div>
 
-      <MahasiswaTable
-        mahasiswa={mahasiswa}
-        openEditModal={openEditModal}
-        onDelete={handleDelete}
-      />
+      {/* Only show table if user has mahasiswa.read permission */}
+      {hasPermission("mahasiswa.read") ? (
+        <MahasiswaTable
+          mahasiswa={mahasiswa}
+          openEditModal={openEditModal}
+          onDelete={handleDelete}
+        />
+      ) : (
+        <p className="text-red-500">Anda tidak memiliki akses membaca data mahasiswa.</p>
+      )}
 
       <MahasiswaModal
         isModalOpen={isModalOpen}
